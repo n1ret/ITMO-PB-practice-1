@@ -3,4 +3,4 @@ project(neatcounter LANGUAGES CXX)
 
 set(CMAKE_CXX_VERSION 23)
 
-add_executable(${PROJECT} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
