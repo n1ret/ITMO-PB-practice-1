@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-const int CHARS_SIZE = 52;
+const int CHARS_SIZE = 26;
 const int WORD_SIZE = 33;
 const int FILE_PATH_SIZE = 1000;
 
@@ -35,8 +35,9 @@ int main(int argc, char** argv) {
 
       int u = 0;
       while (argv[i + 1][u] != 0) {
-        if ((argv[i + 1][u] < 'a' || 'z' < argv[i + 1][u]) &&
-            (argv[i + 1][u] < 'A' || 'Z' < argv[i + 1][u])) {
+        if ('A' <= argv[i + 1][u] && argv[i + 1][u] <= 'Z')
+          argv[i + 1][u] += 'a' - 'A';
+        if (argv[i + 1][u] < 'a' || 'z' < argv[i + 1][u]) {
           std::cerr << "The symbol \"" << argv[i + 1][u]
                     << "\" must not be in the word\n";
           return -1;
@@ -84,6 +85,10 @@ int main(int argc, char** argv) {
 
   int words_count = 0;
   while (file >> word) {
+    for (int i = 0; i < WORD_SIZE; i++) {
+      if ('A' <= word[i] && word[i] <= 'Z') word[i] += 'a' - 'A';
+    }
+
     int in_count = 0;
     for (int i = 0; i < chars_count; i++) {
       if (is_in(word, WORD_SIZE, necessary_chars[i])) in_count++;
