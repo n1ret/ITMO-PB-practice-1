@@ -5,6 +5,12 @@
 const int kCharsSize = 26;
 const int kMaxWordSize = 33;
 
+enum FoundArgsMask {
+  kAll = 0b11,
+  kWord = 0b1,
+  kPath = 0b10,
+};
+
 bool IsIn(char* str, int str_size, char to_find) {
   for (int j = 0; j < str_size; j++)
     if (to_find == str[j]) {
@@ -22,7 +28,7 @@ int main(int argc, char** argv) {
 
   for (int i = 1; i < argc; i++) {
     if (std::strcmp(argv[i], "--word") == 0) {
-      if (found_args & 0b00000001) {
+      if (found_args & FoundArgsMask::kWord) {
         std::cerr << "The word argument must not repeat\n";
         return -1;
       }
@@ -48,9 +54,9 @@ int main(int argc, char** argv) {
         u++;
       }
 
-      found_args |= 0b00000001;
+      found_args |= FoundArgsMask::kWord;
     } else if (std::strcmp(argv[i], "--file") == 0) {
-      if (found_args & 0b00000010) {
+      if (found_args & FoundArgsMask::kPath) {
         std::cerr << "The file argument must not repeat\n";
         return -1;
       }
@@ -62,11 +68,11 @@ int main(int argc, char** argv) {
 
       file_path = argv[i + 1];
 
-      found_args |= 0b00000010;
+      found_args |= FoundArgsMask::kPath;
     }
   }
 
-  if (found_args & 0b00000011 != 0b00000011) {
+  if (found_args & FoundArgsMask::kAll != FoundArgsMask::kAll) {
     std::cerr << "Args was not passed\n";
     return -1;
   }
